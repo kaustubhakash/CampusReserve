@@ -135,8 +135,8 @@ async function runTests() {
       );
       recordResult('CHECK Constraint: Reservation Interval (end_at > start_at)', 'FAIL', 'Inserted reservation with end_at <= start_at');
     } catch (err) {
-      if (err.code === 'ER_CHECK_CONSTRAINT_VIOLATED') {
-        recordResult('CHECK Constraint: Reservation Interval (end_at > start_at)', 'PASS: invalid operation was correctly rejected', 'chk_reservations_interval correctly violated');
+      if (err.code === 'ER_CHECK_CONSTRAINT_VIOLATED' || err.message.includes('Trigger validation error') || err.sqlState === '45000') {
+        recordResult('CHECK Constraint: Reservation Interval (end_at > start_at)', 'PASS: invalid operation was correctly rejected', 'Interval violation rejected by CHECK constraint / BEFORE INSERT trigger');
       } else {
         recordResult('CHECK Constraint: Reservation Interval (end_at > start_at)', 'FAIL', `Unexpected error: ${err.message}`);
       }
