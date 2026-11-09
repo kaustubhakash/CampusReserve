@@ -17,6 +17,10 @@ const poolConfig: mysql.PoolOptions = {
   enableKeepAlive: true,
   keepAliveInitialDelay: 10000,
   decimalNumbers: true,
+  // Ensure MySQL DATETIME values are returned as exact literal strings ('YYYY-MM-DD HH:mm:ss')
+  // preserving the campus Asia/Kolkata timezone without automatic JS Date UTC shifts
+  dateStrings: true,
+  timezone: '+05:30',
 };
 
 let pool: mysql.Pool;
